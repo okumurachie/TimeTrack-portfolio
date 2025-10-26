@@ -9,12 +9,10 @@ use App\Models\User;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\Correction;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Illuminate\Support\Facades\Date;
 
 class AttendanceController extends Controller
 {
@@ -157,22 +155,22 @@ class AttendanceController extends Controller
             $attendance->breakTimes()->delete();
 
             $correctionBreaks = collect($request->input('breaks', []))
-                ->filter(function($break) {
+                ->filter(function ($break) {
                     return is_array($break) && !empty($break['start']) && !empty($break['end']);
                 })
                 ->values();
 
-            $breaksForDB = $correctionBreaks->map(function ($break) use ($date){
-                    return[
-                        'break_start' => $date . ' ' . $break['start'] . ':00',
-                        'break_end' => $date . ' ' . $break['end'] . ':00',
-                    ];
-                })
+            $breaksForDB = $correctionBreaks->map(function ($break) use ($date) {
+                return [
+                    'break_start' => $date . ' ' . $break['start'] . ':00',
+                    'break_end' => $date . ' ' . $break['end'] . ':00',
+                ];
+            })
                 ->toArray();
 
-                if(!empty($breaksForDB)){
-                    $attendance->breakTimes()->createMany($breaksForDB);
-                }
+            if (!empty($breaksForDB)) {
+                $attendance->breakTimes()->createMany($breaksForDB);
+            }
 
             $attendance->load('breakTimes');
 
@@ -186,8 +184,8 @@ class AttendanceController extends Controller
             $changes = [
                 'clock_in' => $request->input('clock_in'),
                 'clock_out' => $request->input('clock_out'),
-                'breaks' => $correctionBreaks->map(function ($break){
-                    return[
+                'breaks' => $correctionBreaks->map(function ($break) {
+                    return [
                         'start' => $break['start'],
                         'end'   => $break['end'],
                     ];

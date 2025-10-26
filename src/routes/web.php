@@ -20,16 +20,13 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 
 
-// 管理者ログイン画面
 Route::get('/admin/login', [AdminAuthenticatedSessionController::class, 'create'])
     ->middleware(['guest:admin'])
     ->name('admin.login');
 
-// 管理者ログイン処理
 Route::post('/admin/login', [AdminAuthenticatedSessionController::class, 'store'])
     ->middleware(['guest:admin']);
 
-// 管理者専用ルート
 Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
     Route::get('/attendance/list', [AdminAttendanceController::class, 'index'])->name('admin.attendances.index');
     Route::get('/attendance/{attendance}', [AdminAttendanceController::class, 'detail'])->name('admin.detail.record');
@@ -46,7 +43,6 @@ Route::prefix('admin')->middleware(['auth:admin'])->group(function () {
 
 
 
-//一般ユーザールート
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect()->route('attendance.index');

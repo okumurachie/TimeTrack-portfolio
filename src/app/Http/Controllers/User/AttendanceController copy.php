@@ -147,8 +147,8 @@ class AttendanceController extends Controller
             }
         }
 
-        if ($latestCorrection && $latestCorrection->status === 'pending') {
-            $breaks = $latestChanges['breaks'] ?? [];
+        if (!empty($latestChanges['breaks'])) {
+            $breaks = $latestChanges['breaks'];
         } else {
             $breaks = $breakTimes
                 ->filter(function ($break) {

@@ -48,16 +48,16 @@ class CorrectionController extends Controller
         $date = $request->query('date', $attendance->work_date->toDateString());
         $workDate = Carbon::parse($date);
 
-        if(!empty($changes['breaks']) && is_array($changes['breaks'])){
+        if (!empty($changes['breaks']) && is_array($changes['breaks'])) {
             $changes['breaks'] = collect($changes['breaks'])
-            ->filter(function($break){
-                return is_array($break) && (
-                    (!empty($break['start'] ?? null)) ||
-                    (!empty($break['end'] ?? null))
-                );
-            })
-            ->values()
-            ->toArray();
+                ->filter(function ($break) {
+                    return is_array($break) && (
+                        (!empty($break['start'] ?? null)) ||
+                        (!empty($break['end'] ?? null))
+                    );
+                })
+                ->values()
+                ->toArray();
         }
 
         return view('admin.approve', compact('correction', 'user', 'attendance', 'changes', 'date', 'workDate'));
@@ -75,9 +75,8 @@ class CorrectionController extends Controller
             $clockIn = !empty($changes['clock_in']) ? Carbon::parse($date . ' ' . $changes['clock_in']) : $attendance->clock_in;
             $clockOut = !empty($changes['clock_out']) ? Carbon::parse($date . ' ' . $changes['clock_out']) : $attendance->clock_out;
 
+            $attendance->breakTimes()->delete();
             if (!empty($changes['breaks'])) {
-                $attendance->breakTimes()->delete();
-
                 $breaks = collect($changes['breaks'])->map(function ($break) use ($attendance) {
                     $workDate = Carbon::parse($attendance->work_date);
                     return [
@@ -85,13 +84,13 @@ class CorrectionController extends Controller
                         'break_end' => !empty($break['end']) ? $workDate->copy()->setTimeFromTimeString($break['end']) : null,
                     ];
                 })
-                ->filter(function($break){
-                    return !empty($break['break_start']) && !empty($break['break_end']);
-                })
-                ->values()
-                ->toArray();
-                if(!empty($breaks)){
-                $attendance->breakTimes()->createMany($breaks);
+                    ->filter(function ($break) {
+                        return !empty($break['break_start']) && !empty($break['break_end']);
+                    })
+                    ->values()
+                    ->toArray();
+                if (!empty($breaks)) {
+                    $attendance->breakTimes()->createMany($breaks);
                 }
                 $attendance->load('breakTimes');
             }
