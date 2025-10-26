@@ -3,7 +3,7 @@
 @section('title', 'スタッフ別勤怠一覧')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/records.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/records.css') }}">
 @endsection
 
 @section('content')

@@ -172,3 +172,18 @@
     align-items: center;
     justify-content: center;
 }
+
+@media (min-width: 768px) and (max-width: 975px) {
+    .header__nav{
+        width: 70vw;
+        display: flex;
+        padding-left: 30px;
+        padding-right: 10px;
+    }
+    .header__nav li{
+        font-size: 18px;
+    }
+    .header__logout{
+        font-size: 18px;
+    }
+}
