@@ -77,6 +77,37 @@ class AttendanceDataSeeder extends Seeder
                         'admin_id' => $status === 'approved' ? $adminIds[array_rand($adminIds)] : null,
                     ]);
 
+                    if ($status === 'approved') {
+                        $dateString = $attendance->work_date->toDateString();
+                        $clockIn = Carbon::parse($dateString . ' ' . $changes['clock_in']);
+                        $clockOut = Carbon::parse($dateString . ' ' . $changes['clock_out']);
+
+                        BreakTime::where('attendance_id', $attendance->id)->delete();
+
+                        foreach ($changes['breaks'] as $break) {
+                            BreakTime::create([
+                                'attendance_id' => $attendance->id,
+                                'break_start' => $dateString . ' ' . $break['start'] . ':00',
+                                'break_end' => $dateString . ' ' . $break['end'] . ':00',
+                            ]);
+                        }
+
+                        $breakMinutes = 0;
+                        foreach ($changes['breaks'] as $break) {
+                            $start = Carbon::parse($dateString . ' ' . $break['start']);
+                            $end = Carbon::parse($dateString . ' ' . $break['end']);
+                            $breakMinutes += $start->diffInMinutes($end);
+                        }
+                        $workMinutes = $clockIn->diffInMinutes($clockOut);
+
+                        $attendance->update([
+                            'clock_in' => $clockIn,
+                            'clock_out' => $clockOut,
+                            'total_break' => $breakMinutes,
+                            'total_work' => max(0, $workMinutes - $breakMinutes),
+                        ]);
+                    }
+
                     $attendance->update(['has_request' => true]);
                 }
             }
