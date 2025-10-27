@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Attendance;
-use App\Models\User;
-use App\Models\BreakTime;
 use App\Models\Correction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
