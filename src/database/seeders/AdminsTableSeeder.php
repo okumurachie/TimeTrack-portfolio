@@ -14,8 +14,8 @@ class AdminsTableSeeder extends Seeder
     public function run(): void
     {
         $admins = [
-            ['id' => 1, 'name' => '管理者1', 'email' => 'admin1@coachtech.com', 'password' => 'admin1234'],
-            ['id' => 2, 'name' => '管理者2', 'email' => 'admin2@coachtech.com', 'password' => 'admin5678'],
+            ['id' => 1, 'name' => '管理者1', 'email' => 'admin1@test.com', 'password' => 'admin1234'],
+            ['id' => 2, 'name' => '管理者2', 'email' => 'admin2@test.com', 'password' => 'admin5678'],
         ];
 
         foreach ($admins as $admin) {
