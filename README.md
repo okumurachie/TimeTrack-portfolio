@@ -1,10 +1,20 @@
 # 勤怠管理アプリ （TimeTrack）
 
+- 事務職としての実務経験を活かし、「給与計算に直結するデータの整合性」と「要件定義への忠実な実装」を
+  重視して開発した勤怠管理アプリです。
+
 【制作の背景・目的】
 
-- プログラミングスクールにて「提示された仕様書に基づき、正確にシステムを構築する」という要件定義の遂行を目的として制作しました。
-  【10年以上の事務経験を活かしたこだわり】
-- 開発にあたっては、以下の点を特に意識しました。- 正確なデータ整合性：勤怠データは給与計算に直結するため、バリd〜ション（入力チェック）を徹底し、誤ったデータ登録を防ぐ設計にしました。- 指示への忠実な再現：スクール課題の要件を深く読み込み、漏れや解離がないよう一つずつ確認しながら実装しました。- ルールや可読性を意識したコーディングを行いました。
+1. 事務経験を活かしたデータ整合性の担保
+   10年以上のオフィスワーク経験から、勤怠データの不備が給与計算の負担に直結することを実感しています。そのため、以下の実装を行いました。</br>
+
+- 徹底したバリデーション:二重打刻の防止や、退勤時間が出勤時間より前にならないなどの入力チェックを厳格にしました。
+- 整合性の維持:勤怠修正の「申請・承認フロー」を設け、いつ誰がデータを変更したか記録する設定を目指しました。
+
+2. 要件定義への忠実な再現
+
+- スクール課題の要件を深く読み込み、漏れや解離がないよう一つずつ確認しながら実装しました。
+- 正確なコーディングルールと読みやすいディレクトリ構造を意識しています。
 
 ## 画面見本
 
@@ -12,128 +22,75 @@
 
 ## 主な機能
 
-【管理者】
-
-- ログイン、ログアウト機能
-- 勤怠詳細取得
-- スタッフ（一般ユーザー）一覧取得機能
-- 月次勤怠一覧取得機能
-- CSVファイル出力機能（月次勤怠一覧）
-- 勤怠修正情報・一覧取得
-- 勤怠修正・申請承認機能
-
-【一般ユーザー】
-
-- 会員登録機能
-- ログイン・ログアウト機能
-- 勤怠打刻機能
-- 勤怠一覧・詳細取得機能
-- 勤怠修正申請機能
-- 勤怠申請情報取得
-- 月次勤怠一覧取得機能
-
-## 環境構築
-
-### Docker ビルド
-
-- 1.git clone git@github.com:okumurachie/TimeTrack.git
-- 2.docker-compose up -d --build
-
-### laravel 環境構築
-
-- 1.docker-compose exec php bash
-- 2.composer install
-- 3.cp .env.example .env(.env.example ファイルから.env を作成し、環境変数を変更)
-
-              DB_HOST=mysql
-              DB_DATABASE=laravel_db
-              DB_USERNAME=laravel_user
-              DB_PASSWORD=laravel_pass
-
-              MAIL_MAILER=smtp
-              MAIL_HOST=mailhog
-              MAIL_PORT=1025
-              MAIL_FROM_ADDRESS=hello@example.com
-
-- 4.php artisan key:generate
-- 5.php artisan migrate
-- 6.php artisan db:seed
-
-## 使用技術（実行環境）
-
-- PHP 8.4.8
-- Laravel 10.48.29
-- MySQL 8.0
-- nginx 1.21.1
+| 役割             | 機能詳細                                                 |
+| :--------------- | :------------------------------------------------------- |
+| **管理者**       | スタッフ管理、月次一覧取得、CSV出力、修正申請の承認/却下 |
+| **一般ユーザー** | 出退勤打刻、勤怠一覧・詳細閲覧、勤怠修正申請             |
 
 ## ER 図
 
 ![ER図](./index.png)
 
+---
+
+## 使用技術（実行環境）
+
+- Backend: PHP 8.4 / Laravel 10
+- DB: MySQL 8.0
+- Infrastructure: Docker (Nginx, PHP-fpm, MySQL, MailHog)
+- Tool: GitHub / phpMyAdmin
+
+## セットアップ(Docker環境)
+
+- リポジトリをクローンした後、以下の手順で構築してください。
+
+### 1. 環境構築・コンテナ起動
+
+```bash
+git clone git@github.com:okumurachie/TimeTrack.git
+cd TimeTrack
+docker-compose up -d --build
+```
+
+### 2. アプリ設定（コンテナ内）
+
+```bash
+docker-compose exec php bash
+composer install
+cp .env.example .env  # 起動後 .env内のDB・Mail設定を下記参照し変更
+php artisan key:generate
+php artisan migrate --seed
+```
+
+### 3. .env設定値
+
+```env
+DB_HOST=mysql
+DB_DATABASE=laravel_db
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+```
+
+## ログイン情報
+
+### テスト用アカウント
+
+| 権限   | メールアドレス     | パスワード  | 備考      |
+| :----- | :----------------- | :---------- | :-------- |
+| 管理者 | `admin1@test.com`  | `admin1234` | 管理者1   |
+| 一般   | `reina.n@test.com` | `abcd1234`  | 西 伶奈   |
+| 一般   | `taro.y@test.com`  | `abcd5678`  | 山田 太郎 |
+
 ## URL
 
-- 開発環境：http://localhost/
+- 勤怠登録画面:http://localhost/attendance
 - 会員登録：http://localhost/register
-- phpMyAdmin:http://localhost:8080/
-
----
-
-## ユーザーのログイン情報
-
-- 管理者ログイン画面(/admin/login)
-- 一般ユーザー会員登録画面(/register)
-- 一般ユーザーログイン画面(/login)
-
-### 管理者ユーザー
-
-- name:管理者1
-- email:admin1@test.com
-- password:admin1234
-
----
-
-- name:管理者2
-- email:admin2@test.com
-- password:admin5678
-
-### 一般ユーザー
-
-- name:西 伶奈
-- email:reina.n@test.com
-- password:abcd1234
-
----
-
-- name:山田 太郎
-- email:taro.y@test.com
-- password:abcd5678
-
----
-
-- name:増田 一世
-- email:issei.m@test.com
-- password:dcba1234
-
----
-
-- name:山本 敬吉
-- email:keikichi.y@test.com
-- password:dcba5678
-
----
-
-- name:秋田 朋美
-- email:tomomi.a@test.com
-- password:abcd4321
-
----
-
-- name:中西 教夫
-- email:norio.n@test.com
-- password:abcd8765
+- 一般ユーザーログイン:http://localhost/login
+- 管理者ログイン:http://localhost/admin/login
 
 ## 勤怠記録情報のダミーデータについて
 
-- 当月、前月、翌月の平日、３ヶ月分で作成。ただし、ダミーユーザーで勤怠打刻などの挙動を確認できるようにするため、今日の日付の勤怠レコードは作らないようにしました。（今日のデータを作成してしまうと、勤怠登録画面のステータスが退勤済になり、打刻ができないため。ただし、テスト環境では、今日の勤怠も作成します。）
-
-# TimeTrack
+- 正確な挙動確認ができるよう、テスト用のシードデーターを調整しています。
