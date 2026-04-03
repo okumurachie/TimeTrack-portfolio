@@ -6,20 +6,20 @@ body {
     padding: 0;
 }
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 }
-.content{
+.content {
     width: 100%;
     min-height: 100vh;
     margin: 0 auto;
     box-sizing: border-box;
 }
-img{
+img {
     width: 100%;
     display: block;
 }
 
-button{
+button {
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -28,7 +28,7 @@ button{
     appearance: none;
 }
 
-.header{
+.header {
     width: 100%;
     margin: 0 auto;
     align-items: center;
@@ -48,47 +48,57 @@ ul {
     list-style: none;
 }
 
-.header__logo{
+.header__logo {
     width: 330px;
     padding-left: 30px;
     height: fit-content;
     vertical-align: middle;
 }
-
-.header__nav{
+.header__logo a {
+    text-decoration: none;
+}
+.header__logo-text {
+    display: block;
+    width: 100%;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    padding: 0;
+}
+.header__nav {
     display: flex;
     padding-right: 30px;
 }
 
-.header__nav ul{
+.header__nav ul {
     display: flex;
     align-items: center;
 }
 
-.header__nav li{
+.header__nav li {
     margin-right: 30px;
     color: #ffffff;
     font-size: 24px;
 }
 
-.header__nav li:hover{
+.header__nav li:hover {
     font-weight: bold;
 }
 
-.header__nav a{
+.header__nav a {
     color: #ffffff;
     text-decoration: none;
 }
-.header__logout{
+.header__logout {
     color: #fff;
     font-size: 24px;
 }
 
-.header__logout:hover{
+.header__logout:hover {
     font-weight: bold;
 }
 
-.btn{
+.btn {
     display: block;
     align-items: center;
     background-color: #000000;
@@ -102,13 +112,13 @@ ul {
     cursor: pointer;
 }
 
-.btn--big{
+.btn--big {
     margin-top: 60px;
     font-size: 26px;
     height: 60px;
 }
 
-.center{
+.center {
     width: 100%;
     max-width: 680px;
     margin: 0 auto;
@@ -116,20 +126,20 @@ ul {
     box-sizing: border-box;
 }
 
-.page__title{
+.page__title {
     font-size: 36px;
     text-align: center;
     margin-bottom: 80px;
 }
 
-.label__name{
+.label__name {
     display: block;
     font-size: 24px;
     font-weight: bold;
     margin: 30px 0 10px 0;
 }
 
-.input{
+.input {
     width: 100%;
     height: 60px;
     padding: 5px;
@@ -137,7 +147,7 @@ ul {
     box-sizing: border-box;
 }
 
-.form__error{
+.form__error {
     color: #ff333f;
     margin-top: 8px;
 }

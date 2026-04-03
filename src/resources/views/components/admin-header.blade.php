@@ -1,7 +1,7 @@
 <header class="header">
     <div class="header__logo">
         <a href="{{ route('admin.attendances.index') }}">
-            <img src="{{asset('images/logo.svg')}}" alt="ロゴ" class="header__logo-image">
+            <p class="header__logo-text">Time track</p>
         </a>
     </div>
     <nav class="header__nav">
